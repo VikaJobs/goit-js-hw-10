@@ -1,8 +1,14 @@
-const BASE_URL = 'https://restcountries.com/v3.1/name';
-const fields = 'fields=name,capital,population,flags,languages';
-
 export function fetchCountries(name) {
-  return fetch(`${BASE_URL}${name}?${fields}`)
-    .then(response => response.json())
-    .catch(error => console.log(error));
+  const URL = `https://restcountries.com/v3.1/name/${name}?fields=name,capital,population,flags,languages`;
+
+  return fetch(URL)
+    .then(response => {
+      return response.json();
+    })
+    .then(data => {
+      return data;
+    })
+    .catch(error => {
+      console.error(error);
+    });
 }

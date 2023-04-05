@@ -4,38 +4,40 @@ import Notiflix from 'notiflix';
 import { fetchCountries } from './js/fetchCountries';
 
 const DEBOUNCE_DELAY = 300;
+const refs = {
+  countryInput: document.querySelector('#search-box'),
+  countryList: document.querySelector('.country-list'),
+  countryInfo: document.querySelector('.country-info'),
+};
 
-const countryInput = document.querySelector('#search-box');
-const countryList = document.querySelector('.country-list');
-const countryInfo = document.querySelector('.country-info');
-
-countryInput.addEventListener(
+refs.countryInput.addEventListener(
   'input',
   debounce(onCountryInput, DEBOUNCE_DELAY)
 );
 
-function onCountryInput() {
-  const name = countryInput.value.trim();
+function onCountryInput(e) {
+  e.preventDefault();
+  const name = refs.countryInput.value.trim();
   if (name === '') {
-    return (countryList.innerHTML = ''), (countryInfo.innerHTML = '');
+    return (refs.countryList.innerHTML = ''), (refs.countryInfo.innerHTML = '');
   }
   fetchCountries(name)
     .then(countries => {
-      countryList.innerHTML = '';
-      countryInfo.innerHTML = '';
+      refs.countryList.innerHTML = '';
+      refs.countryInfo.innerHTML = '';
       if (countries.length === 1) {
-        countryList.insertAdjacentHTML(
+        refs.countryList.insertAdjacentHTML(
           'beforeend',
           renderCountryList(countries)
         );
-        countryInfo.insertAdjacentHTML(
+        refs.countryInfo.insertAdjacentHTML(
           'beforeend',
           renderCountryInfo(countries)
         );
       } else if (countries.length >= 10) {
         alertTooManyMatches();
       } else {
-        countryList.insertAdjacentHTML(
+        refs.countryList.insertAdjacentHTML(
           'beforeend',
           renderCountryList(countries)
         );
